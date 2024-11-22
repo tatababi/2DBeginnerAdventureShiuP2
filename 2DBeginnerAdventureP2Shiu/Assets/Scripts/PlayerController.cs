@@ -6,7 +6,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 3.0f;
+    
     public int maxHealth = 5;
+
+    public GameObject projectilesPrefab;
+   
     public float timeInvincible = 2.0f;
 
     public int health { get { return currentHealth; } }
@@ -59,7 +63,10 @@ public class PlayerController : MonoBehaviour
                 isInvincible = false;
             }
         }
-
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            Launch();
+        }
         
 
 
@@ -89,6 +96,15 @@ public class PlayerController : MonoBehaviour
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         Debug.Log(currentHealth + "/" + maxHealth);
+
+    }
+    void Launch()
+    {
+        GameObject projectileObject = Instantiate(projectilesPrefab, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
+
+        Projectiles projectile = projectileObject.GetComponent<Projectiles>();
+        projectile.Launch(lookDirection, 300);
+        animator.SetTrigger("Launch");
 
     }
 }
