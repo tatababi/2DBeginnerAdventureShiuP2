@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -64,11 +65,22 @@ public class PlayerController : MonoBehaviour
                 isInvincible = false;
             }
         }
-        if(Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             Launch();
         }
-        
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            RaycastHit2D hit2D = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 1.5f, LayerMask.GetMask("Jambi"));
+            if(hit2D.collider != null)
+            {
+                Debug.Log("Raycast has hit the object " + hit2D.collider.gameObject);
+            }
+        }
+
+
+
 
 
 
@@ -93,10 +105,11 @@ public class PlayerController : MonoBehaviour
             isInvincible = true;
             invincibleTimer = timeInvincible;
         }
+        
 
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        Debug.Log(currentHealth + "/" + maxHealth);
+        UIHealthBar.instance.SetValue(currentHealth/(float)maxHealth);
 
     }
     void Launch()
